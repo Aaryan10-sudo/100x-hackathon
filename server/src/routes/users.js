@@ -1,9 +1,7 @@
 const express = require("express");
+const { googleLogin } = require("../controller/google.controller");
 const router = express.Router();
 
-/* GET users listing. */
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
-});
 
+router.post("/google", googleLogin);
 module.exports = router;

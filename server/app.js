@@ -28,6 +28,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -49,7 +51,7 @@ connectDB();
 (async () => {
   await redisClient.set("foo", "bar");
   const value = await redisClient.get("foo");
-  console.log(value); 
+  console.log(value);
 })();
 
 module.exports = app;
