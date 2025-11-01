@@ -464,7 +464,7 @@ const CategoryDropdown = ({
     subCategory => {
       if (activeSubCategory?._id !== subCategory._id) {
         onSubCategoryClick(subCategory);
-      }
+      } 
     },
     [onSubCategoryClick, activeSubCategory]
   );
