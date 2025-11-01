@@ -33,8 +33,8 @@ const DUMMY_CATEGORIES = [
   },
   {
     _id: "cat2",
-    name: "Local Services", // Changed to reflect local business promotion
-    slug: "local-services",
+    name: "Local Products", // Changed to reflect local business promotion
+    slug: "store",
     subCategories: [
       { _id: "sub2a", name: "Local Crafts & Goods", slug: "local-crafts" },
       { _id: "sub2b", name: "Homestays & Lodges", slug: "homestays" },
@@ -257,8 +257,13 @@ const Navbar = () => {
 
   // Handle category selection (UNCHANGED)
   const handleCategoryClick = useCallback(
+<<<<<<< HEAD
     (category) => {
       router.push(`/packages/${category.slug}`);
+=======
+    category => {
+      router.push(`/${category.slug}`);
+>>>>>>> 921ddf19f1d09898534fba581f83994c82755e58
       setActiveCategory(category);
       setActiveDropdown(null);
     },
@@ -447,7 +452,7 @@ const CategoryDropdown = ({
     (subCategory) => {
       if (activeSubCategory?._id !== subCategory._id) {
         onSubCategoryClick(subCategory);
-      }
+      } 
     },
     [onSubCategoryClick, activeSubCategory]
   );

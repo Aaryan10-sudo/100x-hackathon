@@ -89,7 +89,7 @@ const WhyChooseUs = () => {
           viewport={{ once: true }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4"
         >
-          WHY CHOOSE FLYEAST
+          WHY CHOOSE US TO EXPLORE
           <br />
           NEPAL?
         </motion.h2>

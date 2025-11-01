@@ -3,11 +3,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import Fade from "embla-carousel-fade";
-import Autoplay from "embla-carousel-autoplay";
+import Fade from "embla-carousel-fade"; // Ensure this import is correct
+import Autoplay from "embla-carousel-autoplay"; // Ensure this import is correct
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
 
 const mockApi = {
   success: true,
@@ -18,7 +17,7 @@ const mockApi = {
       name: "Everest Base Camp Trek",
       overview:
         "The Everest Base Camp Trek is a legendary adventure offering breathtaking views of Himalayan giants including Mt. Everest, Lhotse, and Ama Dablam.",
-      coverImage: "/scenery.jpg", // Replace with your actual path
+      coverImage: "/scenery.jpg",
       slug: "everest-base-camp-trek",
     },
     {
@@ -26,7 +25,7 @@ const mockApi = {
       name: "Langtang Valley Trek",
       overview:
         "The Langtang Valley Trek offers spectacular Himalayan scenery just north of Kathmandu, combining mountain views with rich Tamang culture.",
-      coverImage: "/hero.jpg", // Replace with your actual path
+      coverImage: "/hero.jpg",
       slug: "langtang-valley-trek",
     },
   ],
@@ -61,14 +60,16 @@ const buttonVariants = {
 };
 
 const EmblaCarousel = ({ options = { loop: true } }) => {
-  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options, [
+  const plugins = [
     Fade(),
     Autoplay({
       delay: 5000,
       stopOnInteraction: false,
       stopOnMouseEnter: true,
     }),
-  ]);
+  ];
+
+  const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options, plugins);
 
   const slides = mockApi.data;
 
@@ -90,7 +91,6 @@ const EmblaCarousel = ({ options = { loop: true } }) => {
               key={index}
             >
               <div className="h-full relative flex w-full font-semibold select-none">
-                {/* Image Background */}
                 <div className="absolute inset-0 bg-black">
                   <Image
                     src={data.coverImage}
@@ -101,11 +101,8 @@ const EmblaCarousel = ({ options = { loop: true } }) => {
                   />
                 </div>
 
-                {/* --- DARK OVERLAY ADDED HERE --- */}
                 <div className="absolute inset-0 bg-black/50 z-[70]"></div>
-                {/* --- END DARK OVERLAY --- */}
 
-                {/* Content */}
                 <div className="z-[80] flex flex-col justify-end pb-16 w-full items-start text-white h-full px-4 sm:px-20">
                   <motion.div
                     className="max-w-2xl"
@@ -128,9 +125,8 @@ const EmblaCarousel = ({ options = { loop: true } }) => {
                     ></motion.p>
                     <motion.div variants={buttonVariants}>
                       <Link href={`/package-details/${data.slug}`}>
-                        <button className="group bg-[#e91e63] text-white font-bold cursor-pointer py-3 px-8 rounded-full transition-colors duration-300 hover:bg-[#d62a4e] flex items-center gap-2">
-                          Start to Explore
-                          <FaArrowRight className="opacity-0 transform translate-x-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1" />
+                        <button className="bg-[#e91e63] text-white font-bold py-3 px-8 rounded-full transition-colors duration-300 hover:bg-[#d62a4e]">
+                          View Details
                         </button>
                       </Link>
                     </motion.div>
