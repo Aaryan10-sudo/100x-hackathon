@@ -33,7 +33,7 @@ const DUMMY_CATEGORIES = [
   },
   {
     _id: "cat2",
-    name: "Local Product", // Changed to reflect local business promotion
+    name: "Local Products", // Changed to reflect local business promotion
     slug: "store",
     subCategories: [
       { _id: "sub2a", name: "Local Crafts & Goods", slug: "local-crafts" },
@@ -258,7 +258,7 @@ const Navbar = () => {
   // Handle category selection (UNCHANGED)
   const handleCategoryClick = useCallback(
     (category) => {
-      router.push(`${category.slug}`);
+      router.push(`/packages/${category.slug}`);
       setActiveCategory(category);
       setActiveDropdown(null);
     },
@@ -340,30 +340,13 @@ const Navbar = () => {
             <NavItem>Home</NavItem>
           </Link>
 
-          {categories?.map((category) => (
-            <div key={category._id} className="relative">
-              <NavItem
-                hasDropdown
-                onClick={() => {
-                  handleCategoryClick(category);
-                }}
-                onMouseEnter={() => handleCategoryHover(category)}
-              >
-                {category.name}
-              </NavItem>
-            </div>
-          ))}
+          <Link href="/explore">
+            <NavItem>Explore Nepal</NavItem>
+          </Link>
 
-          {/* Company Dropdown */}
-          <div className="relative">
-            <NavItem
-              hasDropdown
-              onClick={() => setActiveDropdown("about")}
-              onMouseEnter={handleCompanyHover}
-            >
-              About
-            </NavItem>
-          </div>
+          <Link href="/about">
+            <NavItem>About</NavItem>
+          </Link>
 
           <Link href="/blogs">
             <NavItem>Community Feed</NavItem> {/* Changed to Community Feed */}
