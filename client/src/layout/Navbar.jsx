@@ -33,8 +33,8 @@ const DUMMY_CATEGORIES = [
   },
   {
     _id: "cat2",
-    name: "Local Services", // Changed to reflect local business promotion
-    slug: "local-services",
+    name: "Local Products", // Changed to reflect local business promotion
+    slug: "store",
     subCategories: [
       { _id: "sub2a", name: "Local Crafts & Goods", slug: "local-crafts" },
       { _id: "sub2b", name: "Homestays & Lodges", slug: "homestays" },
@@ -258,7 +258,7 @@ const Navbar = () => {
   // Handle category selection (UNCHANGED)
   const handleCategoryClick = useCallback(
     category => {
-      router.push(`/packages/${category.slug}`);
+      router.push(`/${category.slug}`);
       setActiveCategory(category);
       setActiveDropdown(null);
     },

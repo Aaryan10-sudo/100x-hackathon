@@ -1,12 +1,15 @@
+import CTA from "@/components/CTA";
 import EmblaCarousel from "@/components/Hero";
+import TopDestinationsDemo from "@/components/TopDestinations";
 import WhyChooseUs from "@/components/WhyChoose";
-import React from "react";
 
 const page = () => {
   return (
     <div>
       <EmblaCarousel />
       <WhyChooseUs />
+      <CTA />
+      <TopDestinationsDemo />
     </div>
   );
 };
