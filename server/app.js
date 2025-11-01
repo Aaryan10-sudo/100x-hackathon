@@ -12,6 +12,8 @@ const usersRouter = require("./src/routes/users");
 const { connect } = require("http2");
 const { connectDB } = require("./src/config/connect.db");
 const redisClient = require("./src/config/redis");
+const hotelRouter = require("./src/routes/hotel.routes");
+const bookingRouter = require("./src/routes/booking.routes");
 
 const app = express();
 
@@ -26,13 +28,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-
-
+app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/hotels", hotelRouter);
+app.use("/api/v1/bookings", bookingRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  next(createError(404, "Not Found"));
 });
 
 // error handler

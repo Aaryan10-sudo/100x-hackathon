@@ -57,16 +57,41 @@ exports.googleLogin = async (req, res) => {
       expiresIn: "7d",
     });
 
-    // Return user (without password) and token
-    res.status(200).json({
-      message: "Login successful",
-      token: jwtToken,
-      user,
-    });
+    // Use shared helper to send JWT cookie + JSON response
+    // This centralizes cookie options and token creation.
+    const { sendToken } = require("../utils/jwt");
+    return sendToken(user, 200, res);
   } catch (error) {
     console.error("googleLogin error:", error?.message || error);
     res
       .status(400)
       .json({ message: "Google authentication failed", error: error?.message });
+  }
+};
+
+// Logout: clear cookie and return success
+exports.logout = (req, res) => {
+  // Clear cookie by setting to null and immediate expiry
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.COOKIE_SAMESITE || "Lax",
+  });
+  return res.json({ success: true, message: "Logged out" });
+};
+
+// Get current authenticated user's basic info (requires auth middleware)
+exports.getMe = async (req, res) => {
+  try {
+    const userId = req.user && req.user.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+    const user = await User.findById(userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    return res.json({ user });
+  } catch (err) {
+    console.error("getMe error:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
