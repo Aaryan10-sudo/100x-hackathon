@@ -4,7 +4,7 @@ const BACKGROUND_IMAGE_URL = "/explore-hero.jpg";
 
 const HeroSection = () => {
   return (
-    <div className="relative h-[60vh]  w-full flex items-center justify-center text-center overflow-hidden">
+    <div className="relative h-[70vh]  w-full flex items-center justify-center text-center overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
