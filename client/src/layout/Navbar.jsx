@@ -257,13 +257,8 @@ const Navbar = () => {
 
   // Handle category selection (UNCHANGED)
   const handleCategoryClick = useCallback(
-<<<<<<< HEAD
     (category) => {
       router.push(`/packages/${category.slug}`);
-=======
-    category => {
-      router.push(`/${category.slug}`);
->>>>>>> 921ddf19f1d09898534fba581f83994c82755e58
       setActiveCategory(category);
       setActiveDropdown(null);
     },
