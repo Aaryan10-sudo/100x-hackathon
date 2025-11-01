@@ -163,7 +163,7 @@ export default function ProfilesSection() {
               }}
               className="pb-10"
             >
-              {data.map(profile => (
+              {data.map((profile) => (
                 <SwiperSlide key={profile.id}>
                   <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:shadow-[#FF4E58]/20 transition-all duration-500 group">
                     <div className="relative h-56 w-full overflow-hidden">
