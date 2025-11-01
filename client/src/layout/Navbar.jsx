@@ -81,7 +81,7 @@ const fetchCategories = async () => {
   return DUMMY_CATEGORIES;
 };
 
-const fetchPackagesBySubcategory = async subcategoryId => {
+const fetchPackagesBySubcategory = async (subcategoryId) => {
   if (!subcategoryId) return [];
   // Mock filtering logic for the new platform context
   const packages =
@@ -89,7 +89,7 @@ const fetchPackagesBySubcategory = async subcategoryId => {
       ? DUMMY_PACKAGES.slice(0, 2)
       : DUMMY_PACKAGES.slice(2, 4);
 
-  return packages.map(pkg => ({
+  return packages.map((pkg) => ({
     ...pkg,
     id: pkg.id || pkg._id,
     name: pkg.name || "Unnamed Item/Service",
@@ -229,7 +229,7 @@ const Navbar = () => {
       if (subs.length > 0) {
         const shouldUpdate =
           !activeSubCategory ||
-          !subs.some(sc => sc._id === activeSubCategory._id);
+          !subs.some((sc) => sc._id === activeSubCategory._id);
         if (shouldUpdate) setActiveSubCategory(subs[0]);
       } else {
         setActiveSubCategory(null);
@@ -248,8 +248,8 @@ const Navbar = () => {
   }, [navOpen]);
 
   // Toggle mobile dropdowns (UNCHANGED)
-  const toggleMobileDropdown = useCallback(dropdown => {
-    setMobileDropdowns(prev => ({
+  const toggleMobileDropdown = useCallback((dropdown) => {
+    setMobileDropdowns((prev) => ({
       ...prev,
       [dropdown]: !prev[dropdown],
     }));
@@ -257,8 +257,8 @@ const Navbar = () => {
 
   // Handle category selection (UNCHANGED)
   const handleCategoryClick = useCallback(
-    category => {
-      router.push(`/${category.slug}`);
+    (category) => {
+      router.push(`/packages/${category.slug}`);
       setActiveCategory(category);
       setActiveDropdown(null);
     },
@@ -266,7 +266,7 @@ const Navbar = () => {
   );
 
   // Handle category hover (UNCHANGED)
-  const handleCategoryHover = useCallback(category => {
+  const handleCategoryHover = useCallback((category) => {
     if (dropdownTimerRef.current) {
       clearTimeout(dropdownTimerRef.current);
     }
@@ -283,13 +283,13 @@ const Navbar = () => {
   }, []);
 
   // Handle subcategory selection (UNCHANGED)
-  const handleSubCategoryClick = useCallback(subCategory => {
+  const handleSubCategoryClick = useCallback((subCategory) => {
     setActiveSubCategory(subCategory);
   }, []);
 
   // Close dropdowns when clicking outside (UNCHANGED)
   useEffect(() => {
-    const handleClickOutside = e => {
+    const handleClickOutside = (e) => {
       const navbar = document.getElementById("navbar-container");
       if (navbar && !navbar.contains(e.target)) {
         setActiveDropdown(null);
@@ -340,30 +340,13 @@ const Navbar = () => {
             <NavItem>Home</NavItem>
           </Link>
 
-          {categories?.map(category => (
-            <div key={category._id} className="relative">
-              <NavItem
-                hasDropdown
-                onClick={() => {
-                  handleCategoryClick(category);
-                }}
-                onMouseEnter={() => handleCategoryHover(category)}
-              >
-                {category.name}
-              </NavItem>
-            </div>
-          ))}
+          <Link href="/explore">
+            <NavItem>Explore Nepal</NavItem>
+          </Link>
 
-          {/* Company Dropdown */}
-          <div className="relative">
-            <NavItem
-              hasDropdown
-              onClick={() => setActiveDropdown("about")}
-              onMouseEnter={handleCompanyHover}
-            >
-              About
-            </NavItem>
-          </div>
+          <Link href="/about">
+            <NavItem>About</NavItem>
+          </Link>
 
           <Link href="/blogs">
             <NavItem>Community Feed</NavItem> {/* Changed to Community Feed */}
@@ -461,7 +444,7 @@ const CategoryDropdown = ({
   showNavbar,
 }) => {
   const handleSubCategoryHover = useCallback(
-    subCategory => {
+    (subCategory) => {
       if (activeSubCategory?._id !== subCategory._id) {
         onSubCategoryClick(subCategory);
       } 
@@ -489,7 +472,7 @@ const CategoryDropdown = ({
             </h3>
             <ul className="space-y-4 overflow-y-auto max-h-64 pr-2">
               {subCategories.length > 0 ? (
-                subCategories.map(subCat => (
+                subCategories.map((subCat) => (
                   <li
                     key={subCat._id}
                     className={`cursor-pointer transition-all duration-300 ${
@@ -532,7 +515,7 @@ const CategoryDropdown = ({
               ) : packages.length > 0 ? (
                 <>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {packages.slice(0, 4).map(pkg => (
+                    {packages.slice(0, 4).map((pkg) => (
                       <Link
                         href={`/listing-details/${pkg.slug}`} // Changed to /listing-details
                         key={pkg.id}
@@ -650,7 +633,7 @@ const CompanyDropdown = ({
                   label: "For Local Businesses",
                   href: "/business-guide", // Renamed link
                 },
-              ].map(section => (
+              ].map((section) => (
                 <li
                   key={section.id}
                   className={`cursor-pointer transition-all duration-300 ${
@@ -855,11 +838,11 @@ const MobileNav = ({
                 </li>
 
                 {/* Categories */}
-                {categories?.map(category => (
+                {categories?.map((category) => (
                   <li key={category._id} className="border-b border-zinc-800">
                     <div
                       className="block w-full"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
                         onToggleDropdown(`category-${category._id}`);
                       }}
@@ -879,7 +862,7 @@ const MobileNav = ({
                     </div>
                     {mobileDropdowns[`category-${category._id}`] && (
                       <div className="mt-2 ml-4 mb-4 space-y-3">
-                        {category.subCategories?.map(subcategory => (
+                        {category.subCategories?.map((subcategory) => (
                           <Link
                             href={`/listing-details/${subcategory.slug}`} // Changed link format
                             key={subcategory._id}
@@ -907,7 +890,7 @@ const MobileNav = ({
                 <li className="border-b border-zinc-800">
                   <div
                     className="block w-full"
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       onToggleDropdown("company");
                     }}
@@ -925,7 +908,7 @@ const MobileNav = ({
                   </div>
                   {mobileDropdowns["company"] && (
                     <div className="mt-2 ml-4 mb-4 space-y-3">
-                      {companyItems.map(item => (
+                      {companyItems.map((item) => (
                         <Link href={item.href} key={item.id} onClick={onClose}>
                           <div className="flex items-center text-gray-300 hover:text-[#FF4E58] py-2">
                             <ChevronRight className="w-4 h-4 mr-2" />
