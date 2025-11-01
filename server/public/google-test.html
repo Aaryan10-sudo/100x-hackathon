@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Google Sign-In Test</title>
+  </head>
+  <body>
+    <h1>Google Sign-In Test</h1>
+    <p>
+      Click the button to sign in with Google. The page will POST the ID token
+      to <code>/users/google</code>.
+    </p>
+
+    <div id="g_id_btn"></div>
+    <pre
+      id="result"
+      style="
+        white-space: pre-wrap;
+        background: #f6f8fa;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 12px;
+      "
+    ></pre>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      // Replace this with your Google client ID (from the .env GOOGLE_CLIENT_ID)
+      const CLIENT_ID = "REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID";
+
+      function handleCredentialResponse(response) {
+        // response.credential is the ID token (id_token)
+        console.log("ID token:", response.credential);
+        document.getElementById("result").textContent =
+          "Sending token to server...";
+
+        fetch("/users/google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: response.credential }),
+        })
+          .then(async (res) => {
+            const body = await res.text();
+            try {
+              return JSON.parse(body);
+            } catch (e) {
+              return body;
+            }
+          })
+          .then((data) => {
+            document.getElementById("result").textContent = JSON.stringify(
+              data,
+              null,
+              2
+            );
+            console.log("Server response:", data);
+          })
+          .catch((err) => {
+            document.getElementById("result").textContent =
+              "Request failed: " + err;
+            console.error(err);
+          });
+      }
+
+      window.onload = () => {
+        if (CLIENT_ID.includes("REPLACE_WITH")) {
+          document.getElementById("result").textContent =
+            "Please edit this file and set CLIENT_ID to your Google client id (see server/.env)";
+          return;
+        }
+
+        google.accounts.id.initialize({
+          client_id: CLIENT_ID,
+          callback: handleCredentialResponse,
+        });
+
+        google.accounts.id.renderButton(
+          document.getElementById("g_id_btn"),
+          { theme: "outline", size: "large" } // customization
+        );
+
+        // Optionally show the One Tap prompt
+        // google.accounts.id.prompt();
+      };
+    </script>
+  </body>
+</html>

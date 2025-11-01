@@ -1,12 +1,13 @@
 // creating token and saving in cookie
 
-
-const jwt =  require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
 const cookieExpires = process.env.COOKIE_EXPIRES;
 const secretKey = process.env.JWT_SECRET;
+// allow overriding sameSite behavior via env (useful for cross-site flows)
+const sameSiteSetting = process.env.COOKIE_SAMESITE || "Lax";
 
 exports.sendToken = (user, statusCode, res) => {
   // making token to be stored in the cookie
@@ -16,7 +17,7 @@ exports.sendToken = (user, statusCode, res) => {
   // console.log(infoObj);
 
   let expireInfo = {
-    expiresIn: '3d',
+    expiresIn: "3d",
   };
 
   const token = jwt.sign(infoObj, secretKey, expireInfo);
@@ -29,17 +30,16 @@ exports.sendToken = (user, statusCode, res) => {
   const options = {
     expires: new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Secure in production
-    sameSite: 'Strict', // Prevent CSRF attacks
+    secure: process.env.NODE_ENV === "production", // Secure in production
+    sameSite: sameSiteSetting, // configurable via COOKIE_SAMESITE env
   };
 
   // Exclude sensitive fields from the user object
   const { password, ...safeUser } = user._doc;
 
-  res.status(statusCode).cookie('token', token, options).json({
+  res.status(statusCode).cookie("token", token, options).json({
     success: true,
     user: safeUser,
     token,
   });
 };
-export default sendToken;
